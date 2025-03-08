@@ -3,17 +3,16 @@ from pydantic import BaseModel, HttpUrl
 import hashlib
 import redis
 import os
-from redis_client import redis_client
 
 # Initialize FastAPI app
 app = FastAPI()
 
-# # Initialize Redis connection
-# redis_client = redis.Redis(
-#     host=os.getenv("REDIS_HOST", "redis"),
-#     port=int(os.getenv("REDIS_PORT", 6379)),
-#     decode_responses=True
-# )
+# Initialize Redis connection
+redis_client = redis.Redis(
+    host=os.getenv("REDIS_HOST", "redis"),
+    port=int(os.getenv("REDIS_PORT", 6379)),
+    decode_responses=True
+)
 
 class URLRequest(BaseModel):
     url: HttpUrl

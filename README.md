@@ -1,89 +1,102 @@
-# URL Shortener Microservice
+# FastAPI URL Shortener
 
-## Overview
-This is a simple URL Shortener microservice built with **FastAPI** and **Redis**. The service allows users to shorten URLs and retrieve the original URLs using a unique short code.
+This is a simple URL shortener service built with FastAPI and Redis.
 
-## Features
-- Shorten long URLs
-- Retrieve original URLs using a short code
-- Uses Redis for fast lookups
-- Containerized using Docker for easy deployment
+## 🚀 Features
+- Shortens URLs and stores them in Redis.
+- Retrieves original URLs from short codes.
+- Uses FastAPI for a lightweight and fast backend.
+- Containerized with Docker for easy deployment.
 
-## Prerequisites
-Ensure you have the following installed on your system:
-- [Python 3.9+](https://www.python.org/downloads/)
-- [Docker](https://www.docker.com/get-started)
-- [Docker Compose](https://docs.docker.com/compose/install/)
+---
 
-## Project Structure
-```
-url-shortener/
-│── docker-compose.yml      # Defines Redis & FastAPI containers
-│── Dockerfile              # Builds the FastAPI app
-│── .gitignore              # Git ignore rules
-│── app/
-│   ├── main.py             # FastAPI application
-│   ├── redis_client.py     # Redis connection
-└── requirements.txt        # Python dependencies
-```
+## 📦 Installation & Setup
 
-## Setup and Running the Project
-
-### 1. Clone the Repository
+### 1️⃣ Clone the Repository
 ```sh
-git clone https://github.com/yourusername/url-shortener.git
+git clone https://github.com/your-repo/url-shortener.git
 cd url-shortener
 ```
 
-### 2. Set Up a Virtual Environment (Optional for Local Development)
-```sh
-python -m venv venv
-source venv/bin/activate  # macOS/Linux
-venv\Scripts\activate     # Windows
-```
-
-### 3. Install Dependencies
+### 2️⃣ Install Dependencies
+#### Run Locally (without Docker)
 ```sh
 pip install -r requirements.txt
 ```
 
-### 4. Run the Project with Docker Compose
+#### Run with Docker
 ```sh
 docker-compose up --build
 ```
-This will:
-- Start a **Redis** container
-- Build and start the **FastAPI** microservice
 
-### 5. Verify Everything is Running
-Check running containers:
+---
+
+## 🛠️ Running the Application
+### Run Without Docker
 ```sh
-docker ps
-```
-Expected output:
-```
-CONTAINER ID   IMAGE    COMMAND                  STATUS         PORTS
-xxxxxxxxxxx   redis    "docker-entrypoint.s…"   Up 10 seconds  6379/tcp
-xxxxxxxxxxx   fastapi  "uvicorn app.main:app"   Up 10 seconds  0.0.0.0:8000->8000/tcp
+uvicorn main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-### 6. Test the API
-Open your browser or use **cURL**:
+### Run With Docker
 ```sh
-curl -X GET "http://localhost:8000/"
+docker-compose up
 ```
-Response:
+
+---
+
+## 🔗 API Endpoints
+
+### ➤ Shorten a URL
+#### **POST** `/shorten`
+**Request Body:**
 ```json
-{"message": "Hello, FastAPI!"}
+{
+  "url": "https://example.com"
+}
+```
+**Response:**
+```json
+{
+  "original_url": "https://example.com",
+  "short_url": "http://localhost:8000/abc123"
+}
 ```
 
-### 7. Stopping the Services
-To stop the running containers:
+### ➤ Retrieve Original URL
+#### **GET** `/{short_code}`
+**Example:**
+```sh
+curl -X GET http://localhost:8000/abc123
+```
+**Response:**
+```json
+{
+  "original_url": "https://example.com"
+}
+```
+
+---
+
+## 🐳 Docker Usage
+### **Build & Run Containers**
+```sh
+docker-compose up --build
+```
+
+### **Stop Containers**
 ```sh
 docker-compose down
 ```
 
+---
 
-## License
+## ⚙️ Environment Variables
+| Variable       | Default Value | Description |
+|---------------|--------------|-------------|
+| `REDIS_HOST`  | `redis`      | Redis hostname |
+| `REDIS_PORT`  | `6379`       | Redis port |
+
+---
+
+## 📜 License
 This project is licensed under the MIT License.
-
